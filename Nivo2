@@ -1,0 +1,31 @@
+1. Napisati program koji predstavlja interceptor za logovanje koristeći dekorator koji beleži ulazak i izlazak iz bilo koje funkcije koju dekoriše. Log treba da uključuje ime funkcije, prosleđene argumente i povratnu vrednost.
+
+
+
+def logger(func):
+    def wrapper(*args, **kwargs):
+        print(f"[ULAZ] Funkcija: {func.__name__}")
+        print(f"Argumenti: args={args}, kwargs={kwargs}")
+
+        rezultat = func(*args, **kwargs)
+
+        print(f"Povratna vrednost: {rezultat}")
+        print(f"[IZLAZ] Funkcija: {func.__name__}\n")
+
+        return rezultat
+
+    return wrapper
+
+
+@logger
+def saberi(a, b):
+    return a + b
+
+
+@logger
+def pozdrav(ime):
+    return f"Zdravo, {ime}!"
+
+
+saberi(5, 3)
+pozdrav("Pavle")
