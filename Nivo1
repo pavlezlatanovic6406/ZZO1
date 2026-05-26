@@ -1,0 +1,68 @@
+import socket
+
+HOST = '127.0.0.1'
+PORT = 5000
+
+deo_imena = input("Unesite deo imena: ")
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect((HOST, PORT))
+
+client.send(deo_imena.encode())
+
+odgovor = client.recv(4096).decode()
+
+print("\nPronadjena imena:")
+print(odgovor)
+
+client.close()
+
+
+
+
+import socket
+
+HOST = '127.0.0.1'
+PORT = 5000
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind((HOST, PORT))
+server.listen(1)
+
+print("Server pokrenut...")
+
+while True:
+    conn, addr = server.accept()
+    print("Povezan:", addr)
+
+    deo_imena = conn.recv(1024).decode()
+
+    rezultat = []
+
+    with open("names.txt", "r", encoding="utf-8") as f:
+        for ime in f:
+            ime = ime.strip()
+            if deo_imena.lower() in ime.lower():
+                rezultat.append(ime)
+
+    odgovor = "\n".join(rezultat)
+
+    if not odgovor:
+        odgovor = "Nema odgovarajucih imena."
+
+    conn.send(odgovor.encode())
+    conn.close()
+
+
+Marko
+Stanko
+Petar
+Borko
+Andrej
+Nemanja
+Dusan
+Kristijan
+Nikola
+Lazar
+Filip
+Djordje
